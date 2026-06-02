@@ -6,59 +6,210 @@
   <title>MOGHARE360 Contract UI</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <main class="page">
+
+    <header class="brand-header">
+      <div class="brand-mark">M</div>
+      <div>
+        <strong>MOGHARE360</strong>
+        <span>سامانه قرارداد آنلاین پذیرش خودرو</span>
+      </div>
+    </header>
+
     <section class="hero-card">
-      <p class="eyebrow">MOGHARE360</p>
+      <p class="eyebrow">MOGHARE360 Contract Review</p>
+
       <h1>قرارداد آنلاین پذیرش خودرو</h1>
-      <p>نمونه اولیه صفحه قرارداد مشتری</p>
+
+      <p class="lead">
+        لطفاً ابتدا متن قرارداد را مشاهده کنید. پس از بستن متن قرارداد، بخش تأیید و امضا برای شما فعال می‌شود.
+      </p>
+
+      <div class="summary-grid">
+        <div>
+          <span>نام مشتری</span>
+          <strong>علی ماهرالنقش</strong>
+        </div>
+        <div>
+          <span>خودرو</span>
+          <strong>BMW G30</strong>
+        </div>
+        <div>
+          <span>کد پرونده</span>
+          <strong>REQ-2</strong>
+        </div>
+        <div>
+          <span>نوع خدمت</span>
+          <strong>کارشناسی خرید / فروش</strong>
+        </div>
+      </div>
 
       <div class="actions">
-        <button id="openContractBtn" class="btn primary">مشاهده متن قرارداد</button>
+        <button id="openContractBtn" class="btn primary" type="button">
+          مشاهده متن قرارداد
+        </button>
       </div>
+
+      <p id="contractViewStatus" class="status-note">
+        هنوز متن قرارداد مشاهده و بسته نشده است.
+      </p>
     </section>
 
     <section id="confirmBox" class="panel disabled">
-      <h2>تأیید شرایط اصلی</h2>
+      <h2>تأیید شرایط اصلی قرارداد</h2>
 
-      <label class="check-row">
-        <input type="checkbox" id="hiddenFault">
-        <span>خرابی‌های پنهان و کامپیوتری را مطالعه کردم و می‌پذیرم.</span>
-      </label>
+      <p class="muted">
+        پس از مطالعه متن قرارداد، این سه بخش باید توسط مشتری تکمیل شود.
+      </p>
 
-      <h3>وضعیت بیمه بدنه</h3>
-      <label><input type="radio" name="insurance"> اجازه استفاده از بیمه بدنه را می‌دهم.</label>
-      <label><input type="radio" name="insurance"> اجازه استفاده از بیمه بدنه را نمی‌دهم.</label>
-      <label><input type="radio" name="insurance"> خودرو بیمه بدنه ندارد / اطلاع ندارم.</label>
+      <div class="question-card">
+        <h3>۱. خرابی‌های پنهان و کامپیوتری</h3>
 
-      <h3>سیاست خرید قطعه</h3>
-      <label><input type="radio" name="purchase"> قبل از هر خرید قطعه با من هماهنگ شود.</label>
-      <label><input type="radio" name="purchase"> مجموعه تا سقف مبلغ تعیین‌شده مجاز به خرید است.</label>
-      <label><input type="radio" name="purchase"> در موارد فوری تا سقف مبلغ تعیین‌شده مجاز است.</label>
+        <label class="check-row">
+          <input type="checkbox" id="hiddenFault">
+          <span>
+            خرابی‌های پنهان، کامپیوتری، برقی، نرم‌افزاری، ECU، سنسورها و ایرادات غیرقابل مشاهده در لحظه پذیرش را مطالعه کردم و می‌پذیرم.
+          </span>
+        </label>
+      </div>
 
-      <label class="check-row">
-        <input type="checkbox" id="finalAgree">
-        <span>متن قرارداد و شرایط پذیرش را مطالعه کردم و با آن موافقم.</span>
-      </label>
+      <div class="question-card">
+        <h3>۲. وضعیت استفاده از بیمه بدنه</h3>
 
-      <input class="input" placeholder="نام و نام خانوادگی جهت امضا">
-      <input class="input" placeholder="کد ملی امضاکننده">
+        <label class="radio-row">
+          <input type="radio" name="insurance" value="allowed">
+          <span>اجازه استفاده از بیمه بدنه خودرو را در صورت حادثه احتمالی می‌دهم.</span>
+        </label>
 
-      <button class="btn secondary">دریافت کد تأیید</button>
-      <input class="input" placeholder="کد تأیید پیامکی">
-      <button class="btn primary">ثبت نهایی قرارداد</button>
+        <label class="radio-row">
+          <input type="radio" name="insurance" value="not_allowed">
+          <span>اجازه استفاده از بیمه بدنه خودرو را نمی‌دهم.</span>
+        </label>
+
+        <label class="radio-row">
+          <input type="radio" name="insurance" value="not_available">
+          <span>خودرو بیمه بدنه ندارد / اطلاع ندارم.</span>
+        </label>
+      </div>
+
+      <div class="question-card">
+        <h3>۳. سیاست خرید قطعه</h3>
+
+        <label class="radio-row">
+          <input type="radio" name="purchase" value="call_before_each_purchase">
+          <span>قبل از هر خرید قطعه با من هماهنگ شود.</span>
+        </label>
+
+        <label class="radio-row">
+          <input type="radio" name="purchase" value="authorized_until_limit">
+          <span>مجموعه تا سقف مبلغ تعیین‌شده مجاز به خرید قطعه است.</span>
+        </label>
+
+        <label class="radio-row">
+          <input type="radio" name="purchase" value="urgent_authorized_until_limit">
+          <span>در موارد فوری تا سقف مبلغ تعیین‌شده مجاز به خرید قطعه است.</span>
+        </label>
+
+        <label class="input-label">
+          سقف مبلغ مجاز خرید قطعه، تومان
+          <input class="input" type="number" min="0" step="100000" placeholder="مثلاً 5000000">
+        </label>
+      </div>
+
+      <div class="question-card">
+        <h3>تأیید نهایی</h3>
+
+        <label class="check-row final-check">
+          <input type="checkbox" id="finalAgree">
+          <span>متن قرارداد و شرایط پذیرش را مطالعه کردم و با آن موافقم.</span>
+        </label>
+
+        <label class="input-label">
+          نام و نام خانوادگی جهت امضا
+          <input class="input" placeholder="نام کامل فارسی">
+        </label>
+
+        <label class="input-label">
+          کد ملی امضاکننده
+          <input class="input" inputmode="numeric" placeholder="کد ملی">
+        </label>
+
+        <div class="signature-box">
+          <p>امضای دیجیتال</p>
+          <div class="signature-placeholder">
+            محل امضا با انگشت یا قلم
+          </div>
+          <button class="btn ghost" type="button">پاک کردن امضا</button>
+        </div>
+      </div>
+
+      <div class="otp-card">
+        <button class="btn secondary" type="button">دریافت کد تأیید</button>
+        <input class="input" inputmode="numeric" placeholder="کد تأیید پیامکی">
+        <button class="btn primary" type="button">ثبت نهایی قرارداد</button>
+      </div>
     </section>
   </main>
 
   <div id="contractModal" class="modal hidden">
     <div class="modal-card">
-      <h2>متن رسمی قرارداد</h2>
-      <p>
-        این متن نمونه قرارداد پذیرش خودرو است. نسخه نهایی شامل مشخصات مشتری، خودرو،
-        خدمات انتخاب‌شده، حدود هزینه، شرایط خرید قطعه، خرابی‌های پنهان، بیمه بدنه
-        و شرایط تسویه خواهد بود.
-      </p>
-      <button id="closeContractBtn" class="btn primary">متن قرارداد را مطالعه کردم و می‌بندم</button>
+      <div class="modal-header">
+        <h2>متن رسمی قرارداد پذیرش خودرو</h2>
+        <button id="xCloseContractBtn" class="icon-btn" type="button">×</button>
+      </div>
+
+      <div class="contract-text">
+        <p>
+          این قرارداد فی‌مابین مجموعه MOGHARE360 / مقاره موتورز به عنوان ارائه‌دهنده خدمات تخصصی خودرو
+          و مالک، نماینده مالک یا تحویل‌دهنده خودرو به عنوان مشتری منعقد می‌گردد.
+        </p>
+
+        <p>
+          مشتری با ثبت نهایی این قرارداد، صحت اطلاعات اعلام‌شده درباره خود، مالک، تحویل‌دهنده و خودرو را تأیید می‌نماید
+          و می‌پذیرد که اطلاعات ثبت‌شده مبنای پذیرش، بررسی، کارشناسی، سرویس، تعمیر، تهیه قطعه، تحویل و تسویه خودرو خواهد بود.
+        </p>
+
+        <h3>خرابی‌های پنهان و کامپیوتری</h3>
+        <p>
+          مشتری آگاه است که برخی خرابی‌ها، ایرادات کامپیوتری، برقی، نرم‌افزاری، ECU، سنسورها، ماژول‌ها،
+          خطاهای مقطعی، نشتی‌ها، ضعف قطعات و ایرادات پنهان ممکن است در لحظه پذیرش قابل مشاهده یا تشخیص قطعی نباشند
+          و پس از دیاگ، تست، باز و بست، درایو تست یا ادامه کار خودرو مشخص شوند.
+        </p>
+
+        <h3>بیمه بدنه و جابه‌جایی خودرو</h3>
+        <p>
+          مشتری به مجموعه اجازه می‌دهد در حدود نیاز فنی و عملیاتی، خودرو را جهت بررسی، عیب‌یابی، تست، دیاگ،
+          جابه‌جایی در محوطه کارگاه، درایو تست یا انتقال بین واحدهای مجموعه حرکت دهد.
+          وضعیت استفاده از بیمه بدنه طبق انتخاب مشتری در فرم قرارداد ثبت خواهد شد.
+        </p>
+
+        <h3>خرید قطعه و نوسان قیمت</h3>
+        <p>
+          مشتری آگاه است که قیمت قطعات، به‌ویژه قطعات خودروهای وارداتی، اروپایی، کمیاب، سفارشی یا فوری،
+          ممکن است به علت نوسان بازار، موجودی محدود، زمان تأمین، نرخ ارز، حمل، فوریت یا شرایط تأمین‌کننده تغییر کند.
+          سیاست خرید قطعه مطابق انتخاب مشتری در این فرم اعمال خواهد شد.
+        </p>
+
+        <h3>خدمات خارج از زمان عرف</h3>
+        <p>
+          مشتری می‌پذیرد در صورت درخواست پذیرش، بررسی، کارشناسی، سرویس، تعمیر، تست، تحویل یا ارائه خدمات
+          به صورت فوری، خارج از نوبت، پس از ساعت 17:00، روز جمعه، تعطیل رسمی یا خارج از زمان کاری عرف مجموعه،
+          اجرت خدمات با ضریب 1.5 محاسبه خواهد شد.
+        </p>
+
+        <h3>تسویه و تحویل خودرو</h3>
+        <p>
+          تحویل نهایی خودرو منوط به تسویه کامل، تأیید واحد مالی و تکمیل فرآیند تحویل در سیستم است.
+          مجموعه مجاز است در صورت عدم پرداخت علی‌الحساب، عدم تأیید هزینه‌های لازم، عدم پاسخ‌گویی مشتری یا عدم تسویه،
+          فرآیند تعمیر، تهیه قطعه یا تحویل خودرو را تا تعیین تکلیف متوقف نماید.
+        </p>
+      </div>
+
+      <button id="closeContractBtn" class="btn primary" type="button">
+        متن قرارداد را مطالعه کردم و می‌بندم
+      </button>
     </div>
   </div>
 
