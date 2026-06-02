@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOGHARE360 Contract UI</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="page">
+    <section class="hero-card">
+      <p class="eyebrow">MOGHARE360</p>
+      <h1>قرارداد آنلاین پذیرش خودرو</h1>
+      <p>نمونه اولیه صفحه قرارداد مشتری</p>
+
+      <div class="actions">
+        <button id="openContractBtn" class="btn primary">مشاهده متن قرارداد</button>
+      </div>
+    </section>
+
+    <section id="confirmBox" class="panel disabled">
+      <h2>تأیید شرایط اصلی</h2>
+
+      <label class="check-row">
+        <input type="checkbox" id="hiddenFault">
+        <span>خرابی‌های پنهان و کامپیوتری را مطالعه کردم و می‌پذیرم.</span>
+      </label>
+
+      <h3>وضعیت بیمه بدنه</h3>
+      <label><input type="radio" name="insurance"> اجازه استفاده از بیمه بدنه را می‌دهم.</label>
+      <label><input type="radio" name="insurance"> اجازه استفاده از بیمه بدنه را نمی‌دهم.</label>
+      <label><input type="radio" name="insurance"> خودرو بیمه بدنه ندارد / اطلاع ندارم.</label>
+
+      <h3>سیاست خرید قطعه</h3>
+      <label><input type="radio" name="purchase"> قبل از هر خرید قطعه با من هماهنگ شود.</label>
+      <label><input type="radio" name="purchase"> مجموعه تا سقف مبلغ تعیین‌شده مجاز به خرید است.</label>
+      <label><input type="radio" name="purchase"> در موارد فوری تا سقف مبلغ تعیین‌شده مجاز است.</label>
+
+      <label class="check-row">
+        <input type="checkbox" id="finalAgree">
+        <span>متن قرارداد و شرایط پذیرش را مطالعه کردم و با آن موافقم.</span>
+      </label>
+
+      <input class="input" placeholder="نام و نام خانوادگی جهت امضا">
+      <input class="input" placeholder="کد ملی امضاکننده">
+
+      <button class="btn secondary">دریافت کد تأیید</button>
+      <input class="input" placeholder="کد تأیید پیامکی">
+      <button class="btn primary">ثبت نهایی قرارداد</button>
+    </section>
+  </main>
+
+  <div id="contractModal" class="modal hidden">
+    <div class="modal-card">
+      <h2>متن رسمی قرارداد</h2>
+      <p>
+        این متن نمونه قرارداد پذیرش خودرو است. نسخه نهایی شامل مشخصات مشتری، خودرو،
+        خدمات انتخاب‌شده، حدود هزینه، شرایط خرید قطعه، خرابی‌های پنهان، بیمه بدنه
+        و شرایط تسویه خواهد بود.
+      </p>
+      <button id="closeContractBtn" class="btn primary">متن قرارداد را مطالعه کردم و می‌بندم</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
