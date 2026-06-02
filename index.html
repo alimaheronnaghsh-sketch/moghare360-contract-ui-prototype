@@ -432,9 +432,22 @@
 
       </div>
 
-      <button id="closeContractBtn" class="btn primary" type="button">
-        متن قرارداد را مطالعه کردم و می‌بندم
-      </button>
+      <div class="contract-confirm-box">
+  <label class="check-row">
+    <input type="checkbox" id="contractReadConfirm">
+    <span>
+      متن کامل قرارداد را مطالعه کردم و با آگاهی، درخواست ادامه فرآیند امضا را دارم.
+    </span>
+  </label>
+
+  <button id="closeContractBtn" class="btn primary" type="button" disabled>
+    متن قرارداد را مطالعه کردم و می‌بندم
+  </button>
+
+  <p class="muted">
+    تا زمانی که گزینه مطالعه قرارداد تأیید نشود، امکان ورود به مرحله امضا وجود ندارد.
+  </p>
+</div>
     </div>
   </div>
 
