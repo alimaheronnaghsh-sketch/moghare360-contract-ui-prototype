@@ -350,3 +350,16 @@ p {
     font-size: 15px;
   }
 }
+.contract-confirm-box {
+  margin-top: 24px;
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(16, 173, 136, 0.08);
+  border: 1px solid rgba(117, 214, 181, 0.26);
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+}
