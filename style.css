@@ -142,3 +142,43 @@ label {
     border-radius: 22px;
   }
 }
+label {
+  cursor: pointer;
+}
+
+.check-row,
+.radio-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(185, 243, 223, 0.16);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin: 12px 0;
+  line-height: 1.9;
+  color: #eefaf5;
+}
+
+.check-row input,
+.radio-row input {
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  margin-top: 7px;
+  accent-color: #10ad88;
+  cursor: pointer;
+}
+
+.check-row span,
+.radio-row span {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.check-row:hover,
+.radio-row:hover {
+  border-color: rgba(117, 214, 181, 0.55);
+  background: rgba(16, 173, 136, 0.08);
+}
