@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
 
 * {
   box-sizing: border-box;
@@ -7,7 +8,8 @@
 body {
   margin: 0;
   direction: rtl;
-  font-family: "Vazirmatn", Tahoma, sans-serif;
+  font-family: "Vazirmatn", "Tahoma", sans-serif;
+  font-feature-settings: "ss01";
   background: #06100d;
   color: #f4fbf7;
 }
