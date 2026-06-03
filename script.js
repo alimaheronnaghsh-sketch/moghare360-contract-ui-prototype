@@ -24,7 +24,6 @@ const otpCode = document.getElementById("otpCode");
 const canvas = document.getElementById("signatureCanvas");
 const clearSignatureBtn = document.getElementById("clearSignatureBtn");
 
-let contractOpened = false;
 let contractReadAndClosed = false;
 let signatureIsNotEmpty = false;
 let demoOtp = null;
@@ -36,14 +35,10 @@ const answers = {
   purchaseLimit: null
 };
 
-/* =========================
-   Contract Modal
-========================= */
+/* قرارداد */
 
 function openContract() {
-  if (!modal) return;
   modal.classList.remove("hidden");
-  contractOpened = true;
 }
 
 function closeContractWithApproval() {
@@ -52,66 +47,43 @@ function closeContractWithApproval() {
     return;
   }
 
-  if (modal) {
-    modal.classList.add("hidden");
-  }
-
+  modal.classList.add("hidden");
   contractReadAndClosed = true;
+  signatureBox.classList.remove("hidden");
+  signatureBox.scrollIntoView({ behavior: "smooth", block: "start" });
 
-  if (signatureBox) {
-    signatureBox.classList.remove("hidden");
-  }
-
-  if (statusNote) {
-    statusNote.textContent = "متن قرارداد با تأیید مطالعه بسته شد. اکنون می‌توانید وارد مرحله امضا شوید.";
-    statusNote.classList.add("success");
-    statusNote.classList.remove("warning");
-  }
+  statusNote.textContent = "متن قرارداد با تأیید مطالعه بسته شد. اکنون می‌توانید مرحله امضا را تکمیل کنید.";
+  statusNote.classList.add("success");
+  statusNote.classList.remove("warning");
 }
 
 function closeContractWithoutApproval() {
-  if (modal) {
-    modal.classList.add("hidden");
-  }
+  modal.classList.add("hidden");
 
-  if (!contractReadAndClosed && statusNote) {
-    statusNote.textContent = "متن قرارداد بدون تأیید مطالعه بسته شد. برای ادامه باید دوباره قرارداد را باز کرده و مطالعه را تأیید کنید.";
+  if (!contractReadAndClosed) {
+    statusNote.textContent = "متن قرارداد بدون تأیید مطالعه بسته شد. برای ادامه باید دوباره قرارداد را باز کنید و مطالعه را تأیید نمایید.";
     statusNote.classList.remove("success");
     statusNote.classList.add("warning");
   }
 }
 
-if (openBtn) {
-  openBtn.addEventListener("click", openContract);
-}
+openBtn.addEventListener("click", openContract);
 
-if (contractReadConfirm && closeBtn) {
+contractReadConfirm.addEventListener("change", () => {
   closeBtn.disabled = !contractReadConfirm.checked;
+});
 
-  contractReadConfirm.addEventListener("change", () => {
-    closeBtn.disabled = !contractReadConfirm.checked;
-  });
-}
+closeBtn.addEventListener("click", closeContractWithApproval);
 
-if (closeBtn) {
-  closeBtn.addEventListener("click", closeContractWithApproval);
-}
+xCloseBtn.addEventListener("click", closeContractWithoutApproval);
 
-if (xCloseBtn) {
-  xCloseBtn.addEventListener("click", closeContractWithoutApproval);
-}
+modal.addEventListener("click", (event) => {
+  if (event.target === modal) {
+    alert("برای ادامه، باید داخل متن قرارداد گزینه مطالعه را تأیید کنید و دکمه «متن قرارداد را مطالعه کردم و می‌بندم» را بزنید.");
+  }
+});
 
-if (modal) {
-  modal.addEventListener("click", (event) => {
-    if (event.target === modal) {
-      alert("برای بستن قرارداد و ادامه فرآیند، باید گزینه مطالعه قرارداد را تأیید کنید و دکمه بستن قرارداد را بزنید.");
-    }
-  });
-}
-
-/* =========================
-   Signature Canvas
-========================= */
+/* امضای دیجیتال */
 
 function setupSignatureCanvas() {
   if (!canvas) return;
@@ -119,11 +91,11 @@ function setupSignatureCanvas() {
   const ctx = canvas.getContext("2d");
   let drawing = false;
 
-  function resizeCanvasForDisplay() {
+  function fitCanvas() {
     const rect = canvas.getBoundingClientRect();
     const ratio = window.devicePixelRatio || 1;
 
-    if (rect.width === 0 || rect.height === 0) return;
+    if (!rect.width || !rect.height) return;
 
     canvas.width = rect.width * ratio;
     canvas.height = rect.height * ratio;
@@ -135,8 +107,8 @@ function setupSignatureCanvas() {
     ctx.strokeStyle = "#b9f3df";
   }
 
-  setTimeout(resizeCanvasForDisplay, 300);
-  window.addEventListener("resize", resizeCanvasForDisplay);
+  setTimeout(fitCanvas, 300);
+  window.addEventListener("resize", fitCanvas);
 
   function getPoint(event) {
     const rect = canvas.getBoundingClientRect();
@@ -180,26 +152,20 @@ function setupSignatureCanvas() {
   canvas.addEventListener("touchmove", draw, { passive: false });
   canvas.addEventListener("touchend", stopDraw);
 
-  if (clearSignatureBtn) {
-    clearSignatureBtn.addEventListener("click", () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      signatureIsNotEmpty = false;
-    });
-  }
+  clearSignatureBtn.addEventListener("click", () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    signatureIsNotEmpty = false;
+  });
 }
 
 setupSignatureCanvas();
 
-/* =========================
-   Signature Validation
-========================= */
-
 function validateSignatureStep() {
-  const nameValue = signedName ? signedName.value.trim() : "";
-  const nationalValue = nationalId ? nationalId.value.trim() : "";
+  const nameValue = signedName.value.trim();
+  const nationalValue = nationalId.value.trim();
 
   if (!contractReadAndClosed) {
-    alert("ابتدا باید متن قرارداد را مشاهده و مطالعه آن را تأیید کنید.");
+    alert("ابتدا باید متن قرارداد را مطالعه و تأیید کنید.");
     return false;
   }
 
@@ -221,42 +187,29 @@ function validateSignatureStep() {
   return true;
 }
 
-if (startQuestionsBtn) {
-  startQuestionsBtn.addEventListener("click", () => {
-    if (!validateSignatureStep()) return;
-    showHiddenFaultQuestion();
-  });
-}
+startQuestionsBtn.addEventListener("click", () => {
+  if (!validateSignatureStep()) return;
+  showHiddenFaultQuestion();
+});
 
-/* =========================
-   Question Modal Helpers
-========================= */
+/* ابزار Pop-up */
 
 function openQuestionModal() {
-  if (questionModal) {
-    questionModal.classList.remove("hidden");
-  }
+  questionModal.classList.remove("hidden");
 }
 
 function closeQuestionModal() {
-  if (questionModal) {
-    questionModal.classList.add("hidden");
-  }
+  questionModal.classList.add("hidden");
 }
 
 function setQuestion(title, bodyHtml, actionsHtml) {
-  if (!questionTitle || !questionBody || !questionActions) return;
-
   questionTitle.textContent = title;
   questionBody.innerHTML = bodyHtml;
   questionActions.innerHTML = actionsHtml;
-
   openQuestionModal();
 }
 
-/* =========================
-   Question 1: Hidden Faults
-========================= */
+/* سؤال ۱ */
 
 function showHiddenFaultQuestion() {
   setQuestion(
@@ -285,17 +238,12 @@ function acceptHiddenFault() {
 function rejectHiddenFault() {
   answers.hiddenFaultAccepted = false;
   closeQuestionModal();
+  otpBox.classList.add("hidden");
 
   alert("بدون پذیرش مسئولیت خرابی‌های پنهان و کامپیوتری، امکان ادامه فرآیند پذیرش و عقد قرارداد آنلاین وجود ندارد.");
-
-  if (otpBox) {
-    otpBox.classList.add("hidden");
-  }
 }
 
-/* =========================
-   Question 2: Insurance
-========================= */
+/* سؤال ۲ */
 
 function showInsuranceQuestion() {
   setQuestion(
@@ -348,9 +296,7 @@ function showInsuranceQuestion() {
         warning.classList.remove("hidden");
       } else {
         warning.classList.add("hidden");
-        if (warningAccepted) {
-          warningAccepted.checked = false;
-        }
+        warningAccepted.checked = false;
       }
     });
   });
@@ -358,13 +304,12 @@ function showInsuranceQuestion() {
 
 function submitInsuranceQuestion() {
   const selected = document.querySelector('input[name="qInsurance"]:checked');
+  const warningAccepted = document.getElementById("qInsuranceWarningAccepted");
 
   if (!selected) {
     alert("لطفاً وضعیت تست رانندگی و بیمه بدنه را انتخاب کنید.");
     return;
   }
-
-  const warningAccepted = document.getElementById("qInsuranceWarningAccepted");
 
   if (
     (selected.value === "not_allowed" || selected.value === "not_available") &&
@@ -376,16 +321,12 @@ function submitInsuranceQuestion() {
 
   answers.insuranceOption = selected.value;
   answers.insuranceWarningAccepted =
-    selected.value === "not_allowed" || selected.value === "not_available"
-      ? true
-      : false;
+    selected.value === "not_allowed" || selected.value === "not_available";
 
   showPurchaseQuestion();
 }
 
-/* =========================
-   Question 3: Purchase Limit
-========================= */
+/* سؤال ۳ */
 
 function showPurchaseQuestion() {
   setQuestion(
@@ -430,9 +371,7 @@ function submitPurchaseQuestion() {
   showOtpStep();
 }
 
-/* =========================
-   OTP Step
-========================= */
+/* OTP */
 
 function getInsuranceText(value) {
   if (value === "allowed") return "اجازه تست رانندگی و استفاده از بیمه بدنه داده شد.";
@@ -449,45 +388,37 @@ function getPurchaseText(value) {
 }
 
 function showOtpStep() {
-  if (finalChoicesSummary) {
-    finalChoicesSummary.innerHTML = `
-      <h3>خلاصه تأییدهای ثبت‌شده</h3>
-      <p><strong>خرابی‌های پنهان:</strong> پذیرفته شد.</p>
-      <p><strong>تست رانندگی و بیمه بدنه:</strong> ${getInsuranceText(answers.insuranceOption)}</p>
-      <p><strong>سقف اختیار خرید:</strong> ${getPurchaseText(answers.purchaseLimit)}</p>
-    `;
+  finalChoicesSummary.innerHTML = `
+    <h3>خلاصه تأییدهای ثبت‌شده</h3>
+    <p><strong>خرابی‌های پنهان:</strong> پذیرفته شد.</p>
+    <p><strong>تست رانندگی و بیمه بدنه:</strong> ${getInsuranceText(answers.insuranceOption)}</p>
+    <p><strong>سقف اختیار خرید:</strong> ${getPurchaseText(answers.purchaseLimit)}</p>
+  `;
+
+  otpBox.classList.remove("hidden");
+  otpBox.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+sendOtpBtn.addEventListener("click", () => {
+  demoOtp = "123456";
+  alert("کد تأیید دمو: 123456\nدر سایت اصلی، این کد با پیامک واقعی ارسال خواهد شد.");
+});
+
+finalSubmitBtn.addEventListener("click", () => {
+  if (!demoOtp) {
+    alert("ابتدا کد تأیید را دریافت کنید.");
+    return;
   }
 
-  if (otpBox) {
-    otpBox.classList.remove("hidden");
-    otpBox.scrollIntoView({ behavior: "smooth", block: "start" });
+  if (!otpCode.value.trim()) {
+    alert("کد تأیید پیامکی را وارد کنید.");
+    return;
   }
-}
 
-if (sendOtpBtn) {
-  sendOtpBtn.addEventListener("click", () => {
-    demoOtp = "123456";
-    alert("کد تأیید دمو: 123456\nدر سایت اصلی، این کد با پیامک واقعی ارسال خواهد شد.");
-  });
-}
+  if (otpCode.value.trim() !== demoOtp) {
+    alert("کد تأیید واردشده صحیح نیست. در نسخه دمو کد 123456 است.");
+    return;
+  }
 
-if (finalSubmitBtn) {
-  finalSubmitBtn.addEventListener("click", () => {
-    if (!demoOtp) {
-      alert("ابتدا کد تأیید را دریافت کنید.");
-      return;
-    }
-
-    if (!otpCode || otpCode.value.trim() === "") {
-      alert("کد تأیید پیامکی را وارد کنید.");
-      return;
-    }
-
-    if (otpCode.value.trim() !== demoOtp) {
-      alert("کد تأیید واردشده صحیح نیست. در نسخه دمو کد 123456 است.");
-      return;
-    }
-
-    alert("قرارداد با موفقیت در نسخه دمو تأیید شد. در سایت اصلی، در این مرحله قرارداد ذخیره و JobCard فعال می‌شود.");
-  });
-}
+  alert("قرارداد با موفقیت در نسخه دمو تأیید شد. در سایت اصلی، در این مرحله قرارداد ذخیره و JobCard فعال می‌شود.");
+});
